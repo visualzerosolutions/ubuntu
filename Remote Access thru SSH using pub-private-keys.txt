@@ -18,3 +18,5 @@ PS C:\Users\username> type $env:USERPROFILE\.ssh\id_rsa.pub | ssh ubuntulab@192.
 
 Convert rsa private key to ppk allow putty ssh
 Puttygen-->Conversions-->Import key
+
+test
