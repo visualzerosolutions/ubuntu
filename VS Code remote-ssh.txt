@@ -1,0 +1,6 @@
+VS Code remote-ssh
+https://code.visualstudio.com/docs/remote/ssh
+Powershell:
+ssh ubuntulab@192.168.2.164 to verify the access
+
+VC Code, select Remote-SSH:Connect to Host
