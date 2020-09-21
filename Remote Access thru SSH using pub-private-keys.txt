@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Enable SSH on Ubuntu:
 sudo apt update
 sudo apt install openssh-server
@@ -20,3 +21,25 @@ Convert rsa private key to ppk allow putty ssh
 Puttygen-->Conversions-->Import key
 
 test
+=======
+Enable SSH on Ubuntu:
+sudo apt update
+sudo apt install openssh-server
+sudo systemctl enable --now ssh
+systemctl status ssh.service
+
+Create the RSA/ed25519 key pair on local desktop/laptop:
+$ mkdir -p $HOME/.ssh
+$ chmod 0700 $HOME/.ssh
+$ ssh-keygen
+
+Install the public key in Ubuntu remote server for linux:
+ssh-copy-id ubuntulab@192.168.2.164
+ssh-copy-id -i ~/.ssh/file.pub ubuntulab@192.168.2.164
+
+Install the public key in Ubuntu remote server for windows Powershell:
+PS C:\Users\username> type $env:USERPROFILE\.ssh\id_rsa.pub | ssh ubuntulab@192.168.2.164 "cat >> .ssh/authorized_keys"
+
+Convert rsa private key to ppk allow putty ssh
+Puttygen-->Conversions-->Import key
+>>>>>>> 6d4a0c976fe043344ac3a9fcd544e1a628c36277
