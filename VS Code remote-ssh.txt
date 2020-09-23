@@ -4,3 +4,28 @@ Powershell:
 ssh ubuntulab@192.168.2.164 to verify the access
 
 VC Code, select Remote-SSH:Connect to Host
+
+https://stackoverflow.com/questions/63626161/python-visual-studio-error-the-terminal-process-failed-to-launch-path-to-shel
+
+Open the Command Palette(Ctrl+Shift+P), type in 'Terminal: Select Default Shell' and select a shell. Or on the Terminal panel select the drop-down list of the shell and click 'Select Default Shell'.
+
+ Here are the default paths where Visual Studio Code Insider saves files:
+
+Installation path:
+"%LocalAppData%\Programs\Microsoft VS Code Insiders"
+User settings and preferences:
+"%UserProfile%\.vscode-insiders"
+"%AppData%\Code - Insiders"
+"%AppData%\Visual Studio Code - Insiders"
+Shortcut folder:
+"%AppData%\Microsoft\Windows\Start Menu\Programs\Visual Studio Code - Insiders"
+These folder save the last user session and settings/preferences. Delete those to remove old settings/preferences. If you are concerned about the remaining files after installation you may use VSCode from the portable ZIP files. Here are the direct download links extracted from VSCode alternative downloads:
+
+32 bit stable: https://vscode-update.azurewebsites.net/latest/win32-archive/stable
+32 bit insider: https://vscode-update.azurewebsites.net/latest/win32-archive/insider
+64 bit stable: https://vscode-update.azurewebsites.net/latest/win32-x64-archive/stable
+64 bit insider: https://vscode-update.azurewebsites.net/latest/win32-x64-archive/insider
+
+
+WSL--Windows Subsystem for Linux deployment...
+https://code.visualstudio.com/docs/remote/wsl
