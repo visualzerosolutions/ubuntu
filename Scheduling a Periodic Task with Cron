@@ -1,0 +1,22 @@
+# Setup a cron job to do some simple task every day at 10 AM. Create a file named linuxlab with the following content:
+# 0 10 * * * /tmp/myjob.sh
+
+linuxlab@ubuntu:~$ cat /tmp/myjob.sh
+#!/bin/bash
+echo Hello I am running $0 at $(date)
+linuxlab@ubuntu:~$ ls /tmp/myjob.sh
+/tmp/myjob.sh
+linuxlab@ubuntu:~$ cat /tmp/myjob.sh
+#!/bin/bash
+echo Hello I am running $0 at $(date)
+linuxlab@ubuntu:~$ ls /var/spool/cron/linuxlab
+/var/spool/cron/linuxlab
+linuxlab@ubuntu:~$ cat /var/spool/cron/linuxlab
+0 10 * * * /tmp/myjob.sh
+linuxlab@ubuntu:~$ crontab /var/spool/cron/linuxlab
+linuxlab@ubuntu:~$ crontab -l
+0 10 * * * /tmp/myjob.sh
+linuxlab@ubuntu:~$ crontab -r
+linuxlab@ubuntu:~$ crontab -l
+no crontab for linuxlab
+linuxlab@ubuntu:~$

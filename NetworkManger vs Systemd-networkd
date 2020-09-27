@@ -1,0 +1,45 @@
+# Disable Network Manager and enable systemd-networkd
+
+# Disable NetworkManager:
+$ sudo systemctl stop NetworkManager
+$ sudo systemctl disable NetworkManager
+$ sudo systemctl mask NetworkManager
+
+# Start and enable systemd-networkd service:
+$ sudo systemctl unmask systemd-networkd.service
+$ sudo systemctl enable systemd-networkd.service
+$ sudo systemctl start systemd-networkd.service
+
+# Add the interface configuration to the netplan config file (in the /etc/netplan directory):
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp0s3:
+      dhcp4: yes
+
+# Apply the changes
+$ sudo netplan Apply
+
+# Enable NetworkManager and Disable systemd networkd
+
+# Stop the systemd-networkd service:
+$ sudo systemctl disable systemd-networkd.service
+$ sudo systemctl mask systemd-networkd.service
+$ sudo systemctl stop system-networkd.service
+
+# Install NetowkManager
+$ sudo apt-get install network-Manager
+
+# Open .yaml config file inside the /etc/netplan directory, adding the renderer:
+network:
+  version: 2
+  renderer: NetworkManager
+
+# Generate backend specific configuration files for NetworkManager
+$ sudo netplan Generate
+
+# Start the NetworkManager service:
+$ sudo systemctl unmask NetworkManager
+$ sudo systemctl enable NetworkManager
+$ sudo systemctl start NetworkManager

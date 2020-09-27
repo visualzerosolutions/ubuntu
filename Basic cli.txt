@@ -1,0 +1,112 @@
+# Turning off the Graphical Desktop
+$ sudo systemctl stop gdm
+# Restart Graphical Desktop
+$ sudo systemctl start gdm
+
+# Methods of bringing down the GUI:
+$ sudo systemclt stop gdp
+$ sudo systemctl stop lightdm
+$ sudo telinit 3
+
+# Methods of bringing up GUI:
+$ sudo systemctl start gdm
+$ sudo systemctl start lightdm
+$ sudo telinit 5
+
+# Notify all users prior to shutdown:
+$ sudo shutdown -h 10:00 "Shutting down for scheduled maintenance."
+
+# Locating Applications
+$ which diff
+$ whereis diff
+
+# Exploring the file system
+#displays a tree view of the filesystem:
+$ tree -d
+
+# ln Hard Links one file has more than one name associated with it
+
+$ ln file1 file2
+$ ls -li file1 file2
+linuxlab@ubuntu:~$ ls -li file1 file2
+658143 -rw-rw-r-- 2 linuxlab linuxlab 21 Sep 27 17:36 file1
+658143 -rw-rw-r-- 2 linuxlab linuxlab 21 Sep 27 17:36 file2
+
+
+# ln -s Soft(Symbolic) Links
+
+$ ln -s file1 file3
+$ ln -li file1 file3
+linuxlab@ubuntu:~$ ls -li file1 file3
+658143 -rw-rw-r-- 2 linuxlab linuxlab 21 Sep 27 17:36 file1
+678959 lrwxrwxrwx 1 linuxlab linuxlab  5 Sep 27 17:37 file3 -> file1
+
+# Navigating the Directory History pushd pushes starting directory onto a list, popd send back to those direcotries
+
+linuxlab@ubuntu:~$ mkdir /tmp/dir1 /tmp/dir2
+linuxlab@ubuntu:~$ pushd /tmp/dir1
+/tmp/dir1 ~
+linuxlab@ubuntu:/tmp/dir1$ pushd /tmp/dir2
+/tmp/dir2 /tmp/dir1 ~
+linuxlab@ubuntu:/tmp/dir2$ dirs
+/tmp/dir2 /tmp/dir1 ~
+linuxlab@ubuntu:/tmp/dir2$ popd
+/tmp/dir1 ~
+linuxlab@ubuntu:/tmp/dir1$ popd
+~
+linuxlab@ubuntu:~$
+
+# Viewing Files cat, less, tail, head...
+$ cat testfile
+$ less testfile
+linuxlab@ubuntu:~$ tail testfile
+first
+few
+lines
+can
+be
+viewed
+using
+Head
+command
+Bye!
+linuxlab@ubuntu:~$ head testfile
+Hello
+This
+is
+a
+test
+file
+created
+for
+basic
+linux
+linuxlab@ubuntu:~$ tail -3 testfile
+Head
+command
+Bye!
+linuxlab@ubuntu:~$ head -3 testfile
+Hello
+This
+is
+linuxlab@ubuntu:~$
+
+# removing a directory
+
+mv	# Rename a directory
+rmdir   # Remove an empty directory
+rm -rf	# Forcefully remove a directory recursively
+
+# Finding and Removing Files that End with .swp
+$ find -name "*.swp" -exec rm {} ';'
+
+# The linux command line by William Shotts
+http://linuxcommand.org/tlcl.php
+
+# Ubuntu Documentation
+https://help.ubuntu.com/
+
+
+
+
+
