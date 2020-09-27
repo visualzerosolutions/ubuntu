@@ -4,8 +4,9 @@
 linuxlab@ubuntu:~$ cat /tmp/myjob.sh
 #!/bin/bash
 echo Hello I am running $0 at $(date)
-linuxlab@ubuntu:~$ ls /tmp/myjob.sh
-/tmp/myjob.sh
+linuxlab@ubuntu:~$ ls -l /tmp/myjob.sh
+-rwxrwxr-x 1 linuxlab linuxlab 50 Sep 27 22:09 /tmp/myjob.sh
+linuxlab@ubuntu:~$
 linuxlab@ubuntu:~$ cat /tmp/myjob.sh
 #!/bin/bash
 echo Hello I am running $0 at $(date)
