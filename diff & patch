@@ -1,0 +1,175 @@
+# Using diff and patch
+# change to the /tmp directory
+linuxlab@ubuntu:~$ cd /tmp
+
+# Copy a file to /tmp
+linuxlab@ubuntu:/tmp$ cp /etc/group .
+
+# use dd to copy the file to a new file in /tmp while converting characters to upper-case, as in "dd if=/tmp/group of=/tmp/GROUP conv=ucase."
+linuxlab@ubuntu:/tmp$ dd if=/tmp/group of=/tmp/GROUP conv=ucase
+1+1 records in
+1+1 records out
+1017 bytes (1.0 kB) copied, 0.00106485 s, 955 kB/s
+
+# The preferred options for preparing a patch with diff are -Naur when comparing two directory trees recursively.
+# Here we ignore the -a option, which means treat all files as text, since patch and diff should only be used on text files anyway.
+# Since we are just comparing two files, we don't need to use N or r options to diff, but we could use them anyway as it will not make a difference.
+# Compare group and GROUP using diff, and prepare a proper patch file.
+linuxlab@ubuntu:/tmp$ diff -Nur group GROUP > patchfile
+linuxlab@ubuntu:/tmp$ cat patchfile
+--- group       2020-09-28 10:32:29.813076738 +0000
++++ GROUP       2020-09-28 10:36:11.596144832 +0000
+@@ -1,71 +1,71 @@
+-root:x:0:
+-daemon:x:1:
+-bin:x:2:
+-sys:x:3:
+-adm:x:4:syslog,linuxlab
+-tty:x:5:
+-disk:x:6:
+-lp:x:7:
+-mail:x:8:
+-news:x:9:
+-uucp:x:10:
+-man:x:12:
+-proxy:x:13:
+-kmem:x:15:
+-dialout:x:20:
+-fax:x:21:
+-voice:x:22:
+-cdrom:x:24:linuxlab
+-floppy:x:25:
+-tape:x:26:
+-sudo:x:27:linuxlab
+-audio:x:29:pulse
+-dip:x:30:linuxlab
+-www-data:x:33:
+-backup:x:34:
+-operator:x:37:
+-list:x:38:
+-irc:x:39:
+-src:x:40:
+-gnats:x:41:
+-shadow:x:42:
+-utmp:x:43:
+-video:x:44:
+-sasl:x:45:
+-plugdev:x:46:linuxlab
+-staff:x:50:
+-games:x:60:
+-users:x:100:
+-nogroup:x:65534:
+-systemd-journal:x:101:
+-systemd-network:x:102:
+-systemd-resolve:x:103:
+-systemd-timesync:x:104:
+-crontab:x:105:
+-messagebus:x:106:
+-input:x:107:
+-kvm:x:108:
+-render:x:109:
+-syslog:x:110:
+-tss:x:111:
+-uuidd:x:112:
+-tcpdump:x:113:
+-ssh:x:114:
+-landscape:x:115:
+-lxd:x:116:linuxlab
+-systemd-coredump:x:999:
+-linuxlab:x:1000:
+-rtkit:x:117:
+-netdev:x:118:
+-bluetooth:x:119:
+-avahi:x:120:
+-lpadmin:x:121:
+-pulse:x:122:
+-pulse-access:x:123:
+-geoclue:x:124:
+-scanner:x:125:saned
+-saned:x:126:
+-colord:x:127:
+-gdm:x:128:
+-ssl-cert:x:129:linuxlab
+-xrdp:x:130:
++ROOT:X:0:
++DAEMON:X:1:
++BIN:X:2:
++SYS:X:3:
++ADM:X:4:SYSLOG,LINUXLAB
++TTY:X:5:
++DISK:X:6:
++LP:X:7:
++MAIL:X:8:
++NEWS:X:9:
++UUCP:X:10:
++MAN:X:12:
++PROXY:X:13:
++KMEM:X:15:
++DIALOUT:X:20:
++FAX:X:21:
++VOICE:X:22:
++CDROM:X:24:LINUXLAB
++FLOPPY:X:25:
++TAPE:X:26:
++SUDO:X:27:LINUXLAB
++AUDIO:X:29:PULSE
++DIP:X:30:LINUXLAB
++WWW-DATA:X:33:
++BACKUP:X:34:
++OPERATOR:X:37:
++LIST:X:38:
++IRC:X:39:
++SRC:X:40:
++GNATS:X:41:
++SHADOW:X:42:
++UTMP:X:43:
++VIDEO:X:44:
++SASL:X:45:
++PLUGDEV:X:46:LINUXLAB
++STAFF:X:50:
++GAMES:X:60:
++USERS:X:100:
++NOGROUP:X:65534:
++SYSTEMD-JOURNAL:X:101:
++SYSTEMD-NETWORK:X:102:
++SYSTEMD-RESOLVE:X:103:
++SYSTEMD-TIMESYNC:X:104:
++CRONTAB:X:105:
++MESSAGEBUS:X:106:
++INPUT:X:107:
++KVM:X:108:
++RENDER:X:109:
++SYSLOG:X:110:
++TSS:X:111:
++UUIDD:X:112:
++TCPDUMP:X:113:
++SSH:X:114:
++LANDSCAPE:X:115:
++LXD:X:116:LINUXLAB
++SYSTEMD-COREDUMP:X:999:
++LINUXLAB:X:1000:
++RTKIT:X:117:
++NETDEV:X:118:
++BLUETOOTH:X:119:
++AVAHI:X:120:
++LPADMIN:X:121:
++PULSE:X:122:
++PULSE-ACCESS:X:123:
++GEOCLUE:X:124:
++SCANNER:X:125:SANED
++SANED:X:126:
++COLORD:X:127:
++GDM:X:128:
++SSL-CERT:X:129:LINUXLAB
++XRDP:X:130:
+
+# Use patch to patch the original file, /tmp/group, so its contents now match those of the modified file, /tmp/GROUP.
+# You might try with the --dry-run option first.
+# Note: You coud have also done either of these two commands: "patch group < patchfile", "patch < patchfile"
+linuxlab@ubuntu:/tmp$ patch --dry-run group patchfile
+checking file group
+linuxlab@ubuntu:/tmp$ patch group patchfile
+patching file group
+linuxlab@ubuntu:/tmp$ diff group GROUP
+linuxlab@ubuntu:/tmp$
+

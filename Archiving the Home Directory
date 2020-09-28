@@ -1,0 +1,99 @@
+# Construct a tarball archive of the HOME directory
+# tar -cvf /tmp/backup.tar ~
+# OR tar -cvf /tmp/backup.tar /home/linuxlab
+linuxlab@ubuntu:/tmp$ tar cvf /tmp/backup.tar ~
+tar: Removing leading `/' from member names
+/home/linuxlab/
+/home/linuxlab/testfile
+/home/linuxlab/.pcsc11/
+tar: /home/linuxlab/.pcsc11/pcscd.comm: socket ignored
+/home/linuxlab/.xorgxrdp.10.log.old
+/home/linuxlab/.viminfo
+/home/linuxlab/Docker/
+/home/linuxlab/Docker/1.docker-machine-on-ubuntu.txt
+/home/linuxlab/Docker/0. creating ssh key.sh
+/home/linuxlab/Docker/3.docker-machine-on-google-cloud.txt
+/home/linuxlab/Docker/4. operation.txt
+/home/linuxlab/Docker/credential.sh
+/home/linuxlab/Docker/LICENSE
+/home/linuxlab/Docker/.git/
+/home/linuxlab/Docker/.git/index
+/home/linuxlab/Docker/.git/hooks/
+/home/linuxlab/Docker/.git/hooks/pre-rebase.sample
+/home/linuxlab/Docker/.git/hooks/pre-applypatch.sample
+/home/linuxlab/Docker/.git/hooks/pre-commit.sample
+/home/linuxlab/Docker/.git/hooks/pre-receive.sample
+/home/linuxlab/Docker/.git/hooks/fsmonitor-watchman.sample
+/home/linuxlab/Docker/.git/hooks/pre-push.sample
+/home/linuxlab/Docker/.git/hooks/commit-msg.sample
+/home/linuxlab/Docker/.git/hooks/update.sample
+/home/linuxlab/Docker/.git/hooks/applypatch-msg.sample
+/home/linuxlab/Docker/.git/hooks/post-update.sample
+/home/linuxlab/Docker/.git/hooks/pre-merge-commit.sample
+/home/linuxlab/Docker/.git/hooks/prepare-commit-msg.sample
+/home/linuxlab/Docker/.git/packed-refs
+/home/linuxlab/Docker/.git/branches/
+/home/linuxlab/Docker/.git/info/
+...
+...
+...
+/home/linuxlab/.mozilla/firefox/h9ly8k24.default/crashes/events/
+/home/linuxlab/.mozilla/firefox/h9ly8k24.default/xulstore.json
+/home/linuxlab/.mozilla/firefox/h9ly8k24.default/TRRBlacklist.txt
+/home/linuxlab/.mozilla/firefox/h9ly8k24.default/extension-preferences.json
+/home/linuxlab/.mozilla/firefox/Crash Reports/
+/home/linuxlab/.mozilla/firefox/Crash Reports/InstallTime20200831163820
+/home/linuxlab/.mozilla/firefox/Crash Reports/events/
+/home/linuxlab/thinclient_drives/
+/home/linuxlab/thinclient_drives/.clipboard/
+
+# Create archives with all three compression utilities without -v option for verbose
+# tar zcf /tmp/backup.tar.gz ~
+# tar jcf /tmp/backup.tar.bz2 ~
+# tar Jcf /tmp/backup.tar.xz ~
+linuxlab@ubuntu:/tmp$ tar zcf /tmp/backup.tar.gz ~
+tar: Removing leading `/' from member names
+tar: /home/linuxlab/.pcsc11/pcscd.comm: socket ignored
+tar: Removing leading `/' from hard link targets
+linuxlab@ubuntu:/tmp$ tar jcf /tmp/backup.tar.bz2 ~
+tar: Removing leading `/' from member names
+tar: /home/linuxlab/.pcsc11/pcscd.comm: socket ignored
+tar: Removing leading `/' from hard link targets
+linuxlab@ubuntu:/tmp$ tar Jcf /tmp/backup.tar.xz ~
+tar: Removing leading `/' from member names
+tar: /home/linuxlab/.pcsc11/pcscd.comm: socket ignored
+tar: Removing leading `/' from hard link targets
+
+# Comparing the sizes, using -h option to ls to make it human-readable
+linuxlab@ubuntu:/tmp$ ls -lh /tmp/backup*
+-rw-rw-r-- 1 linuxlab linuxlab 414M Sep 28 11:12 /tmp/backup.tar
+-rw-rw-r-- 1 linuxlab linuxlab 148M Sep 28 11:15 /tmp/backup.tar.bz2
+-rw-rw-r-- 1 linuxlab linuxlab 161M Sep 28 11:13 /tmp/backup.tar.gz
+-rw-rw-r-- 1 linuxlab linuxlab 122M Sep 28 11:20 /tmp/backup.tar.xz
+
+# Comparing the sizes, without using -h option
+linuxlab@ubuntu:/tmp$ ls -l /tmp/backup*
+-rw-rw-r-- 1 linuxlab linuxlab 433571840 Sep 28 11:12 /tmp/backup.tar
+-rw-rw-r-- 1 linuxlab linuxlab 154738188 Sep 28 11:15 /tmp/backup.tar.bz2
+-rw-rw-r-- 1 linuxlab linuxlab 168129888 Sep 28 11:13 /tmp/backup.tar.gz
+-rw-rw-r-- 1 linuxlab linuxlab 126900144 Sep 28 11:20 /tmp/backup.tar.xz
+
+# Note in this case there is not much difference int he differnt archiving methods, but this particular directory was a bad choice 
+# because it already contained a lot of compressed files.
+# A somewhat better example involving more text files:
+linuxlab@ubuntu:/tmp$ tar cf /tmp/doc.tar /usr/share/doc
+tar: Removing leading `/' from member names
+linuxlab@ubuntu:/tmp$ tar zcf /tmp/doc.tar.gz /usr/share/doc
+tar: Removing leading `/' from member names
+linuxlab@ubuntu:/tmp$ tar jcf /tmp/doc.tar.bz2 /usr/share/doc
+tar: Removing leading `/' from member names
+linuxlab@ubuntu:/tmp$ tar Jcf /tmp/doc.tar.xz /usr/share/doc
+tar: Removing leading `/' from member names
+
+# This shows xz did best, followed by bz2 and then gz.
+linuxlab@ubuntu:/tmp$ ls -lh /tmp/doc.tar*
+-rw-rw-r-- 1 linuxlab linuxlab 48M Sep 28 11:23 /tmp/doc.tar
+-rw-rw-r-- 1 linuxlab linuxlab 17M Sep 28 11:25 /tmp/doc.tar.bz2
+-rw-rw-r-- 1 linuxlab linuxlab 19M Sep 28 11:25 /tmp/doc.tar.gz
+-rw-rw-r-- 1 linuxlab linuxlab 15M Sep 28 11:26 /tmp/doc.tar.xz
+linuxlab@ubuntu:/tmp$
