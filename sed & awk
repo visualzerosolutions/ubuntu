@@ -221,7 +221,7 @@ xrdp
 
 ##############################################################################
 # Print first and seventh field of every line
-#
+##############################################################################
 
 linuxlab@ubuntu:~$ awk -F: '{print $1 $7}' /etc/passwd
 root/bin/bash
@@ -269,4 +269,242 @@ saned/usr/sbin/nologin
 colord/usr/sbin/nologin
 gdm/bin/false
 xrdp/usr/sbin/nologin
+linuxlab@ubuntu:~$
+
+##############################################################################
+# Pasing Files with awk (and sort and qniq)
+# The field in /etc/passwd that hods the shell is number 7. to display the field the shell
+# in /etc/passwd using awk and produce a unique list
+##############################################################################
+linuxlab@ubuntu:~$ awk -F: '{print $7}' /etc/passwd | sort -u
+/bin/bash
+/bin/false
+/bin/sync
+/usr/sbin/nologin
+linuxlab@ubuntu:~$ awk -F: '{print $7}' /etc/passwd | sort | uniq
+/bin/bash
+/bin/false
+/bin/sync
+/usr/sbin/nologin
+linuxlab@ubuntu:~$
+
+##############################################################################
+# Search a number of programs to see which ones have GPL licenses of various versions
+##############################################################################
+linuxlab@ubuntu:~$ strings /usr/bin/a* | grep GPL
+The license of this software as SPDX string, e.g. "GPL-3+"
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+# Copyright (C) 2001-2002 by Kevin Atkinson under the GNU LGPL
+# LGPL license along with this library if you did not you can find it
+plugin_is_GPL_compatible
+load_ext: library `%s': does not define `plugin_is_GPL_compatible' (%s)
+linuxlab@ubuntu:~$
+
+##############################################################################
+# using grep
+##############################################################################
+
+# Search for your username in file /etc/passwd 
+linuxlab@ubuntu:~$ grep linuxlab /etc/passwd
+linuxlab:x:1000:1000:linuxlab:/home/linuxlab:/bin/bash
+
+# Find all entries in /etc/services that include the string ftp
+linuxlab@ubuntu:~$ grep ftp /etc/services
+ftp-data 20/tcp
+ftp  21/tcp
+tftp  69/udp
+ftps-data 989/tcp     # FTP over SSL (data)
+ftps  990/tcp
+venus-se 2431/udp   # udp sftp side effect
+codasrv-se 2433/udp    # udp sftp side effect
+gsiftp  2811/tcp
+frox  2121/tcp   # frox: caching ftp proxy
+zope-ftp 8021/tcp   # zope management by ftp
+
+# Restrict to those that use the tcp protocol
+linuxlab@ubuntu:~$ grep ftp /etc/services | grep tcp
+ftp-data 20/tcp
+ftp  21/tcp
+ftps-data 989/tcp     # FTP over SSL (data)
+ftps  990/tcp
+gsiftp  2811/tcp
+frox  2121/tcp   # frox: caching ftp proxy
+zope-ftp 8021/tcp   # zope management by ftp
+
+# Now restrict to those that do not use the tcp protocol, while printing out the line number
+linuxlab@ubuntu:~$ grep -n ftp /etc/services | grep -v tcp
+40:tftp  69/udp
+194:venus-se 2431/udp   # udp sftp side effect
+198:codasrv-se 2433/udp   # udp sftp side effect
+
+# Now restrict to those that do not use the tcp protocol, while printing out the line number
+linuxlab@ubuntu:~$ grep -e ^ts -e st$ /etc/services
+
+##############################################################################                        
+#                              tr
+##############################################################################
+
+# Convert lower case to upper case
+# tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ	
+linuxlab@ubuntu:~$ cat phonebook
+555-123-4567 Wally
+555-231-3891 Beaver
+555-893-1048 Lumpy
+555-732-7320 June
+
+linuxlab@ubuntu:~$ cat phonebook | tr a-z A-Z
+555-123-4567 WALLY
+555-231-3891 BEAVER
+555-893-1048 LUMPY
+555-732-7320 JUNE
+
+# Translate braces into parenthesis
+# tr '{}' '()' < inputfile > outputfile	 
+linuxlab@ubuntu:~$ tr '{}' '()' < test1 > test2
+linuxlab@ubuntu:~$ cat test2
+This is a ( test ) file
+To translate ( ) to ()
+linuxlab@ubuntu:~$ cat test1
+This is a { test } file
+To translate { } to ()
+
+# Translate white-space to tabs
+# echo "This is for testing" | tr [:space:] '\t'
+linuxlab@ubuntu:~$ echo "This is for testing" | tr [:space:] '\t'
+This is for testing linuxlab@ubuntu:~$
+
+#  Squeeze repetition of characters using -s
+#  echo "This   is   for    testing" | tr -s [:space:]  
+linuxlab@ubuntu:~$ echo "This    is    for    testing" | tr -s [:space:]
+This is for testing
+
+# Delete specified characters using -d option
+# echo "the geek stuff" | tr -d 't'	 
+linuxlab@ubuntu:~$ echo "the geek stuff" | tr -d 't'
+he geek suff
+
+# Complement the sets using -c option
+# echo "my username is 432234" | tr -cd [:digit:]	
+linuxlab@ubuntu:~$ echo "my username is 432234" | tr -cd [:digit:]
+432234linuxlab@ubuntu:~$
+
+# Remove all non-printable character from a file
+# tr -cd [:print:] < file.txt	
+linuxlab@ubuntu:~$ tr -cd [:print:] < phonebook
+555-123-4567Wally555-231-3891Beaver555-893-1048Lumpy555-732-7320Junelinuxlab@ubuntu:~$
+
+# Join all the lines in a file into a single line
+# tr -s '\n' ' ' < file.txt	   
+linuxlab@ubuntu:~$ tr -s '\n' ' ' < phonebook
+555-123-4567 Wally 555-231-3891 Beaver 555-893-1048 Lumpy 555-732-7320 June linuxlab@ubuntu:~$
+
+##############################################################################
+#                        tee
+# tee takes the output from any command, and, while sending it to standard output, it also saves it to a file. In other words, 
+# it tees the output stream from the command: one stream is displayed on the standard output and the other is saved to a file.
+#
+##############################################################################
+linuxlab@ubuntu:/etc$ sudo find . -name "*cfg" | tee /tmp/tee_output
+./libblockdev/conf.d/00-default.cfg
+./vdpau_wrapper.cfg
+./cloud/ds-identify.cfg
+./cloud/cloud.cfg
+./cloud/cloud.cfg.d/curtin-preserve-sources.cfg
+./cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg
+./cloud/cloud.cfg.d/50-curtin-networking.cfg
+./cloud/cloud.cfg.d/05_logging.cfg
+./cloud/cloud.cfg.d/90_dpkg.cfg
+./default/grub.d/init-select.cfg
+./perl/Net/libnet.cfg
+./dpkg/dpkg.cfg
+linuxlab@ubuntu:/etc$ cat /tmp/tee_output
+./libblockdev/conf.d/00-default.cfg
+./vdpau_wrapper.cfg
+./cloud/ds-identify.cfg
+./cloud/cloud.cfg
+./cloud/cloud.cfg.d/curtin-preserve-sources.cfg
+./cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg
+./cloud/cloud.cfg.d/50-curtin-networking.cfg
+./cloud/cloud.cfg.d/05_logging.cfg
+./cloud/cloud.cfg.d/90_dpkg.cfg
+./default/grub.d/init-select.cfg
+./perl/Net/libnet.cfg
+./dpkg/dpkg.cfg
+linuxlab@ubuntu:/etc$
+
+linuxlab@ubuntu:~$ cat phonebook
+555-123-4567 Wally
+555-231-3891 Beaver
+555-893-1048 Lumpy
+555-732-7320 June
+linuxlab@ubuntu:~$ cut -f2 phonebook
+Wally
+Beaver
+Lumpy
+June
+
+##############################################################################                        
+#                              cut
+##############################################################################
+
+linuxlab@ubuntu:~$ ls -l | cut -d" " -f1
+total
+-rw-rw-r--
+-rw-rw-r--
+drwxr-xr-x
+drwxrwxr-x
+drwxr-xr-x
+drwxr-xr-x
+-rw-rw-r--
+-rw-rw-r--
+-rw-rw-r--
+-rw-rw-r--
+lrwxrwxrwx
+drwxr-xr-x
+-rw-rw-r--
+-rw-rw-r--
+-rw-rw-r--
+-rw-rw-r--
+drwxr-xr-x
+drwxr-xr-x
+drwxr-xr-x
+drwxr-xr-x
+-rw-rw-r--
+-rw-rw-r--
+-rw-rw-r--
+drwxrwxr-t
+drwxrwxr-x
+drwxr-xr-x
+
+##############################################################################                        
+#                           Using wc
+##############################################################################
+linuxlab@ubuntu:~$ sudo wc /var/log/*.log
+      0       0       0 /var/log/alternatives.log
+      0       0       0 /var/log/apport.log
+    981   12622  105171 /var/log/auth.log
+   1361    7182  104003 /var/log/bootstrap.log
+   3989   45620  526750 /var/log/cloud-init.log
+    249    1903   18193 /var/log/cloud-init-output.log
+     52     310    3642 /var/log/dpkg.log
+     56     416    4139 /var/log/fontconfig.log
+     36     146    1163 /var/log/gpu-manager.log
+  13222  187886 1322356 /var/log/kern.log
+      0       0       0 /var/log/ubuntu-advantage.log
+     17      82     717 /var/log/vmware-network.1.log
+     16      78     697 /var/log/vmware-network.2.log
+     16      78     697 /var/log/vmware-network.3.log
+     16      78     697 /var/log/vmware-network.4.log
+     17      82     717 /var/log/vmware-network.5.log
+     16      78     697 /var/log/vmware-network.6.log
+     17      78     705 /var/log/vmware-network.7.log
+     16      78     697 /var/log/vmware-network.log
+     24     201    2167 /var/log/vmware-vmsvc-root.1.log
+     25     198    2156 /var/log/vmware-vmsvc-root.2.log
+     21     177    1910 /var/log/vmware-vmsvc-root.3.log
+     21     177    1910 /var/log/vmware-vmsvc-root.log
+     17     176    1546 /var/log/vmware-vmtoolsd-root.log
+    560    4773   43389 /var/log/xrdp.log
+    204    1871   16080 /var/log/xrdp-sesman.log
+  20949  264290 2160199 total
 linuxlab@ubuntu:~$
