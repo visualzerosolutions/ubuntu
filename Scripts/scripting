@@ -92,3 +92,14 @@ length of string1 = 4, length of string2 = 8
 String 2 is longer than string 1
 String 1 is not the same as string 2
 linuxlab@ubuntu:~$
+
+linuxlab@ubuntu:~$ ./testcase.sh
+Error. Give as an argument a number between 1 and 12.
+linuxlab@ubuntu:~$ ./testcase.sh 5
+May
+linuxlab@ubuntu:~$ ./testcase.sh 12
+December
+linuxlab@ubuntu:~$ ./testcase.sh 99
+Error. No month matches: 99
+Please pass a number between 1 and 12.
+linuxlab@ubuntu:~$
