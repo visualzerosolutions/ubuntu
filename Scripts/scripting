@@ -1,0 +1,94 @@
+# To view the full list of file conditions:
+man 1 test
+
+NAME
+       test - check file types and compare values
+
+SYNOPSIS
+       test EXPRESSION
+       test
+       [ EXPRESSION ]
+       [ ]
+       [ OPTION
+
+ FILE1 -ot FILE2
+              FILE1 is older than FILE2
+
+       -b FILE
+              FILE exists and is block special
+
+       -c FILE
+              FILE exists and is character special
+
+       -d FILE
+              FILE exists and is a directory
+
+       -e FILE
+              FILE exists
+
+       -f FILE
+              FILE exists and is a regular file
+
+       -g FILE
+              FILE exists and is set-group-ID
+
+       -G FILE
+              FILE exists and is owned by the effective group ID
+
+       -h FILE
+              FILE exists and is a symbolic link (same as -L)
+
+       -k FILE
+              FILE exists and has its sticky bit set
+
+       -L FILE
+              FILE exists and is a symbolic link (same as -h)
+
+       -O FILE
+              FILE exists and is owned by the effective user ID
+
+       -p FILE
+              FILE exists and is a named pipe
+
+       -r FILE
+              FILE exists and read permission is granted
+...
+
+linuxlab@ubuntu:~$ for n in a s m d x ; do ./testmath.sh $n 21 7 ; done
+21 a 7 :
+Method 1, $((..)), Answer is 28
+Method 2, let,     Answer is 28
+Method 3, expr,    Answer is 28
+21 s 7 :
+Method 1, $((..)), Answer is 14
+Method 2, let,     Answer is 14
+Method 3, expr,    Answer is 14
+21 m 7 :
+Method 1, $((..)), Answer is 147
+Method 2, let,     Answer is 147
+Method 3, expr,    Answer is 147
+21 d 7 :
+Method 1, $((..)), Answer is 3
+Method 2, let,     Answer is 3
+Method 3, expr,    Answer is 3
+operator must be a, s, m, or d, not x as supplied
+x is not a, s, m, or d, aborting
+linuxlab@ubuntu:~$
+
+linuxlab@ubuntu:~$ ./teststrings.sh str1 str2
+Is string 1 zero length? Value of 1 means FALSE
+1
+Is string 2 nonzero length? Value of 0 means TRUE;
+0
+length of string1 = 4, length of string2 = 4
+String 1 is the same length as string 2
+String 1 is not the same as string 2
+linuxlab@ubuntu:~$ ./teststrings.sh str1 str2long
+Is string 1 zero length? Value of 1 means FALSE
+1
+Is string 2 nonzero length? Value of 0 means TRUE;
+0
+length of string1 = 4, length of string2 = 8
+String 2 is longer than string 1
+String 1 is not the same as string 2
+linuxlab@ubuntu:~$
