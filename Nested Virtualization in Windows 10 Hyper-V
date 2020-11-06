@@ -1,0 +1,22 @@
+# Parent Windows 10 Pro operating system is running Hyper-V. 
+# A Hyper-V VM is also running Windows Pro and has nested virtualization enabled
+# This allows us to run Hyper-V inside of that VM. 
+
+
+PS C:\Windows\system32> Get-VM 'eve-ng-o' | Select-Object Name, Version
+
+Name     Version
+----     -------
+eve-ng-o 9.0
+
+#  The VM must be Hyper-V Configuration Version 8.0 or higher
+#  If the configuration version is too low, then you can fix the problem by using the Update-VMVersion cmdlet followed by the VM name
+
+
+# With the VM still powered off, we will need to use the Set-VMProcessor cmdlet to enable nested virtualization for the VM. 
+# The required parameters include VMName and ExposeVirtualizationExtensions (which must be set to $True).
+
+PS C:\Windows\system32> Set-VMProcessor -VMName 'eve-ng-o' -ExposeVirtualizationExtensions $True
+PS C:\Windows\system32>
+
+
