@@ -69,3 +69,10 @@ $ vagrant ssh
 $ which php
 $ which nginx
 $ which mysqld
+
+# using ansible-playbook command
+vi inventory_file
+172.28.128.5 ansible_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/default/virtualbox/private_key
+
+
+$ ansible-book$ ansible-playbook -i inventory_file provisioning/playbook.yml
