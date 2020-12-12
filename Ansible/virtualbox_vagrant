@@ -11,12 +11,16 @@ $ vagrant init ubuntu/trusty64
 #  Open the Vagrantfile in your editor and add the following to the end of the file, just
 before the word end.  
 $ vi Vagrantfile
+ config.vm.box = "ubuntu/trusty64"
+ config.vm.network "private_network", type:"dhcp"
+
 # This tells Vagrant that it needs to create a virtual machine with 1024mb of memory.
 # We also need to tell Vagrant that we want to run Ansible on this virtual machine by
 adding some instructions to the Vagrantfile, just after the configuration you just added.
 Right at the bottom and before the word end, add the following contents to the file:
 config.vm.provider "virtualbox" do |vb|
  vb.memory = "1024"
+ vb.gui = true
 end
 
 # This tells Vagrant to use Ansible to run the playbook named playbook.yml inside a
