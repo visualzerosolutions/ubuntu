@@ -1,0 +1,31 @@
+$ sudo apt update
+$ sudo apt install ansible
+$ sudo apt install virtualbox
+$ sudo atp update
+$ curl -O https://releases.hashicorp.com/vagrant/2.2.14/vagrant_2.2.14_x86_64.deb
+$ sudo apt install ./vagrant_2.2.14_x86_64.deb
+$ vagrant --version
+
+$ mkdir ansible-book && cd ansible-book
+$ vagrant init ubuntu/trusty64
+#  Open the Vagrantfile in your editor and add the following to the end of the file, just
+before the word end.  
+$ vi Vagrantfile
+# This tells Vagrant that it needs to create a virtual machine with 1024mb of memory.
+# We also need to tell Vagrant that we want to run Ansible on this virtual machine by
+adding some instructions to the Vagrantfile, just after the configuration you just added.
+Right at the bottom and before the word end, add the following contents to the file:
+config.vm.provider "virtualbox" do |vb|
+ vb.memory = "1024"
+end
+
+# This tells Vagrant to use Ansible to run the playbook named playbook.yml inside a
+folder named provisioning in the current directory. 
+config.vm.provision "ansible" do |ansible|
+ ansible.playbook = "provisioning/playbook.yml"
+end 
+
+$ vagrant up
+$ vagrant status
+$ vagrant destroy
+
