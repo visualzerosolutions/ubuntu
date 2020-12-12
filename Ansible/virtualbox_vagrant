@@ -28,4 +28,5 @@ end
 $ vagrant up
 $ vagrant status
 $ vagrant destroy
-
+#Enable nested VM
+$VBoxManage modifyvm ansible-book_default_1607797511858_37122 --nested-hw-virt on
