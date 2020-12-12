@@ -51,6 +51,17 @@ $ vi ./provisioning/playbook.yml
     - name: Install mySQL
       apt: name=mysql-server-5.6 state=present
 
+# consolidated playbook.yml
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install required packages
+      apt: name={{item}} state=present update_cache=yes
+      with_items:
+        - php5-cli
+        - nginx
+        - mysql-server-5.6
 
 $ vagrant provision
 
