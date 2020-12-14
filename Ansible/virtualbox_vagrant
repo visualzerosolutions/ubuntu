@@ -120,5 +120,59 @@ $ vagrant ssh
 $ apt search mysql | grep mysql
 $ apt search php | grep php
 
+# run do-release-upgrade upgrade to 16.04.7
+# playbook.yml
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Make sure we can connect
+      ping:
+    # PHP
+    - name: Run apt update
+      apt: update_cache=yes
+    - name: Add the ondrej PHP PPA
+      apt_repository: repo='ppa:ondrej/php'
+    - name: update the apt cache
+      apt: update_cache=yes cache_valid_time=3600
+    - name: install php
+      apt: name={{item}} state=present
+      with_items:
+              - php
+              - php-fpm
+              - php-mysql
+              - php-xml
+    - name: remove apache2
+      apt: name=apach2 state=absent
+    # MySQL
+    - name: install MySQL
+      apt: name={{item}} state=present
+      with_items:
+              - mysql-server-5.7
+              - python-mysqldb 
+    - name: Generate new root password
+      command: openssl rand -hex 7
+      register: mysql_new_root_pass 
+      
+    - name: Output new root password
+      debug: msg="New root password is {{mysql_new_root_pass.stdout}}"     
+      
+    - name: Create my.cnf
+      template: src=templates/mysql/my.cnf dest=/root/.my.cnf   
+
+    - name: Generate new root password
+      command: openssl rand -hex 7 creates=/root/.my.cnf
+      register: mysql_new_root_pass
+      
+    - name: Generate new root password
+      command: openssl rand -hex 7 creates=/root/.my.cnf
+      register: mysql_new_root_pass
+    # If /root/.my.cnf doesn't exist and the command is run
+    - debug: msg="New root password is {{ mysql_new_root_pass.stdout }}"
+      when: mysql_new_root_pass.changed
+    # If /root/.my.cnf exists and the command is not run
+    - debug: msg="No change to root password"
+      when: not mysql_new_root_pass.changed 
+
 
 
