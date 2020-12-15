@@ -6,7 +6,7 @@ systemctl status ssh.service
 
 Create the RSA/ed25519 key pair on local desktop/laptop:
 $ mkdir -p $HOME/.ssh
-$ chmod 0700 $HOME/.ssh
+$ chmod 0777 $HOME/.ssh
 $ ssh-keygen
 
 Install the public key in Ubuntu remote server for linux:
