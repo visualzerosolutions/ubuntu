@@ -1,0 +1,51 @@
+$ ls -l /etc/resolv.conf
+
+$ cat /etc/resolv.conf
+
+$ sudo apt update
+$ sudo apt install resolvconf
+
+$ sudo systemctl status resolvconf.service
+
+$ sudo systemctl start resolvconf.service
+$ sudo systemctl enable resolvconf.service
+$ sudo systemctl status resolvconf.service
+
+$ sudo nano /etc/resolvconf/resolv.conf.d/head
+
+$ sudo systemctl start resolvconf.service
+
+
+===============Netplan DHCP================
+ubuntulab@ckad-1:~$ cat /etc/netplan/00-installer-config.yaml
+# This is the network config written by 'subiquity'
+network:
+  ethernets:
+    eth0:
+      dhcp4: true
+      nameservers:
+          addresses: [8.8.8.8, 8.8.4.4]
+  version: 2
+ubuntulab@ckad-1:~$
+
+ubuntulab@ckad-1:~$ cat initial.sh
+sudo swapoff -a
+sudo netplan apply
+
+ubuntulab@ckad-1:~$ sudo chmod +x initial.sh
+ubuntulab@ckad-1:~$ ./initial.sh
+
+=================Netplan static===================
+ubuntulab@ckad-1:~$ cat /etc/netplan/00-installer-config.yaml
+# This is the network config written by 'subiquity'
+network:
+  ethernets:
+    eth0:
+      dhcp4: no
+      addresses:
+        - 192.168.1.81/24
+      gateway4: 192.168.1.1
+      nameservers:
+          addresses: [8.8.8.8, 8.8.4.4]
+  version: 2
+ubuntulab@ckad-1:~$
